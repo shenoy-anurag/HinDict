@@ -1,0 +1,1 @@
+Dictionary to learn Hindi words, their meanings, synonyms, antonyms and usage.

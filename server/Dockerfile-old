@@ -1,0 +1,36 @@
+FROM ubuntu:latest
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir /app
+WORKDIR /app
+
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+ADD server /app/server
+
+RUN apt-get update
+RUN apt-get -y install curl
+RUN apt-get install -y python3-pip
+RUN apt install -y pipx
+RUN pipx ensurepath
+RUN pipx install virtualenv
+RUN python3 -m virtualenv --version
+RUN python3 -m virtualenv venv
+RUN source venv/bin/activate
+
+ADD server/requirements.txt /app
+RUN pip3 install -r /app/requirements.txt
+
+RUN ls
+RUN locale -a
+
+# RUN locale-gen en_US en_US.UTF-8
+# RUN dpkg-reconfigure locales
+
+# RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+
+COPY server/wsgi.py /app
+COPY server/entrypoint.sh /app
+
+RUN chmod +x ./entrypoint.sh
