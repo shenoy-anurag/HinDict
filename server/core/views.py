@@ -3,12 +3,13 @@ import logging
 import os
 import traceback
 
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, Response, request, jsonify, make_response, stream_with_context
 from flask_jwt_extended import (
     jwt_required, create_access_token, get_jwt_identity, create_refresh_token
 )
 from flask_restful import Resource
-from ollama import chat, ChatResponse
+from ollama import Client, chat, ChatResponse
+from markupsafe import escape
 
 from server import app, api, JWT_ACCESS_TOKEN_TIMEDELTA, JWT_REFRESH_TOKEN_TIMEDELTA
 # from server.common import mem_cache
@@ -95,7 +96,46 @@ class Chat(Resource):
         user = request.json.get('user', None)
 
         try:
-            response: ChatResponse = chat(model='llama3.2', messages=[
+            client = Client(
+                host='http://ollama:11434',
+                headers={'x-some-header': 'some-value'}
+            )
+            stream = client.chat(
+                model='llama3.2:3b',
+                messages=[
+                    {
+                        'role': 'user',
+                        'content': prompt,
+                    }
+                ],
+                stream=True
+            )
+            def generate():
+                for chunk in stream:
+                    yield (chunk['message']['content'])
+
+            return Response(stream_with_context(generate()), content_type='text/plain')
+        except Exception as e:
+            logger.error(e)
+            logger.debug(traceback.format_exc())
+            return make_response(jsonify({'status': API_STATUS_ERROR}))
+
+
+class ChatSync(Resource):
+    def post(self):
+        if not request.is_json:
+            return jsonify({'status': API_STATUS_FAILURE, "msg": "Missing JSON in request"})
+
+        prompt = request.json.get('prompt', None)
+        # role = request.json.get('role', None)
+        user = request.json.get('user', None)
+
+        try:
+            client = Client(
+                host='http://ollama:11434',
+                headers={'x-some-header': 'some-value'}
+            )
+            response: ChatResponse = client.chat(model='llama3.2:3b', messages=[
                 {
                     'role': 'user',
                     'content': prompt,
@@ -103,7 +143,7 @@ class Chat(Resource):
             ])
             print(response.message.content)
             return make_response(
-                jsonify({'status': API_STATUS_SUCCESS, 'message': response.message.content, 'response': response}))
+                jsonify({'status': API_STATUS_SUCCESS, 'message': response.message.content}))
         except Exception as e:
             logger.error(e)
             logger.debug(traceback.format_exc())
@@ -115,3 +155,4 @@ api.add_resource(Login, '/login')
 api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(Protected, '/protected')
 api.add_resource(Chat, '/chat')
+api.add_resource(ChatSync, '/chat-sync')
