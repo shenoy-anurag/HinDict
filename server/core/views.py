@@ -150,9 +150,46 @@ class ChatSync(Resource):
             return make_response(jsonify({'status': API_STATUS_ERROR}))
 
 
+class Stream(Resource):
+    def get(self):
+        if not request.query_string:
+            return jsonify({'status': API_STATUS_FAILURE, "msg": "Missing Query string in request"})
+
+        prompt = request.args.get('word')
+        user = request.args.get('user')
+        
+        system_prompt = "I want your answer to be only one sentence long. Keep the word count low, and skip any disclaimers or examples. Keep the structure of the response like so: user word in romanized form, user word in devanagari followed by refers to ... continue with definition for 5 to 15 more words. End with one additional sentence with this structure: Closest english equivalent word: word goes here "
+
+        try:
+            client = Client(
+                host='http://ollama:11434',
+                headers={'x-some-header': 'some-value'}
+            )
+            stream = client.chat(
+                model='llama3.2:3b',
+                messages=[
+                    {
+                        'role': 'user',
+                        'content': "{}\n\nuser word: {}".format(system_prompt, prompt),
+                    }
+                ],
+                stream=True
+            )
+            def generate():
+                for chunk in stream:
+                    yield (chunk['message']['content'])
+
+            return Response(stream_with_context(generate()), content_type='text/plain')
+        except Exception as e:
+            logger.error(e)
+            logger.debug(traceback.format_exc())
+            return make_response(jsonify({'status': API_STATUS_ERROR}))
+
+
 api.add_resource(Ping, '/ping')
 api.add_resource(Login, '/login')
 api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(Protected, '/protected')
 api.add_resource(Chat, '/chat')
 api.add_resource(ChatSync, '/chat-sync')
+api.add_resource(Stream, '/stream')
