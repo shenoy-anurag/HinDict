@@ -9,6 +9,7 @@ __pycache__/
 exp/
 config/.env
 config/prod.env
+config/
 docs/
 data/
 
