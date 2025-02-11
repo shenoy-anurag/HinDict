@@ -20,3 +20,18 @@ Built the front-end in Next.js and the back-end using Flask web framework.
 
 ## Thoughts
 I'm pretty sure the LLM is overkill for this use-case (despite picking the small 3B parameter model), but I wanted to have fun building with LLMs. Currently fine-tuning a smaller model to save on costs.
+
+## More demo images
+#### Bhumi
+![Demo Screenshot: Bhumi](./docs/images/hindict-bhumi-light.png)
+#### Bhumi (dark mode)
+![Demo Screenshot: Bhumi (dark mode)](./docs/images/hindict-bhumi-dark.png)
+#### Gyan
+![Demo Screenshot: Gyan](./docs/images/hindict-gyan.png)
+#### Manushya
+![Demo Screenshot: Manushya](./docs/images/hindict-manushya.png)
+#### Janma
+![Demo Screenshot: Janma](./docs/images/hindict-janma.png)
+
+### Support me if you like this project!
+<a href="buymeacoffee.com/anuragshenoy"><img src="./docs/images/black-button.png" alt="Buy me a coffee: https://buymeacoffee.com/anuragshenoy" width="200"></a>

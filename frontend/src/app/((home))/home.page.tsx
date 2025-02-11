@@ -35,12 +35,26 @@ export default function HomePage() {
     const [error, setError] = React.useState<any>(null);
 
     function extractEquivalentWord(text: string): string | null {
-        const match = text.match(/word:\s*(\w+)\.*$/);
+        const match1 = text.match(/equivalent:\s*(\w+)\.*$/);
+        const match2 = text.match(/word:\s*(\w+)\.*$/);
+        const match3 = text.match(/refers to\s*(\w+)\s*/);
+        let match: RegExpMatchArray | null = null;
+        if (match1 && match1[1])
+            match = match1;
+        else if (match2 && match2[1])
+            match = match2;
+        else if (match3 && match3[1])
+            match = match3;
+        // else {
+        //     match = null;
+        // }
+        // const match = match1 || match2 || match3;
         return match ? match[1] : null;
     }
 
     async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        setMessage("");
         const response = await searchQuery(keyword);
         let streamedMessage: string = '';
         if (response != undefined && response.status === 200) {

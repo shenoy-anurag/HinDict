@@ -158,7 +158,11 @@ class Stream(Resource):
         prompt = request.args.get('word')
         user = request.args.get('user')
         
-        system_prompt = "I want your answer to be only one sentence long. Keep the word count low, and skip any disclaimers or examples. Keep the structure of the response like so: user word in romanized form, user word in devanagari followed by refers to ... continue with definition for 5 to 15 more words. End with one additional sentence with this structure: Closest english equivalent word: word goes here "
+        # system_prompt = "I want your answer to be only one sentence long. Keep the word count low, and skip any disclaimers or examples. Keep the structure of the response like so: user word in romanized form, user word in devanagari followed by refers to ... continue with definition for 5 to 15 more words. End with one additional sentence with this structure: Closest english equivalent word: word goes here " # First try, before learning about prompt engineering.
+        # system_prompt = "“Respond in one concise sentence without disclaimers or examples. Format: , , refers to … (provide a definition in 5-15 words). Conclude with: Closest English equivalent: .”"
+        # system_prompt = "Respond in one concise sentence without disclaimers or examples. Format: User word title-case, (user word in Hindi), refers to … (provide a definition in 5-15 words). Conclude with: Closest English equivalent: ."
+        # system_prompt = "Respond in one concise sentence without disclaimers or examples. Format: User word title-case, (user word in Hindi), refers to … (provide a definition in 5-15 words). Always conclude with this exact phrase: \'Closest English equivalent: (closest english equivalent word)\'. Do not omit this phrase under any circumstances." # 2nd BEST PROMPT SO FAR!!
+        system_prompt = "Respond in one concise sentence without disclaimers or examples. Format: User word title-case, (user word in Hindi), refers to … (provide a definition in 5-15 words). Always conclude with this exact phrase: \'Closest English equivalent: (closest english equivalent single word)\'. Do not omit this phrase under any circumstances." # BEST PROMPT SO FAR!!
 
         try:
             client = Client(
