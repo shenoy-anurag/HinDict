@@ -18,6 +18,11 @@ I brushed up my skills with using open-source LLMs such as Llama3.2 and deployin
 ## Tech
 Built the front-end in Next.js and the back-end using Flask web framework.
 
+## Prompt Engineering
+> Respond in one concise sentence without disclaimers or examples. Format: User word title-case, (user word in Hindi), refers to … (provide a definition in 5-15 words). Always conclude with this exact phrase: \'Closest English equivalent: (closest english equivalent single word)\'. Do not omit this phrase under any circumstances.
+
+Had to add the "Do not omit this phrase under any circumstances" because the model was hallucinating.
+
 ## Thoughts
 I'm pretty sure the LLM is overkill for this use-case (despite picking the small 3B parameter model), but I wanted to have fun building with LLMs. Currently fine-tuning a smaller model to save on costs.
 
@@ -30,8 +35,8 @@ I'm pretty sure the LLM is overkill for this use-case (despite picking the small
 ![Demo Screenshot: Gyan](./docs/images/hindict-gyan.png)
 #### Manushya
 ![Demo Screenshot: Manushya](./docs/images/hindict-manushya.png)
-#### Janma
+#### Janma (dark mode)
 ![Demo Screenshot: Janma](./docs/images/hindict-janma.png)
 
 ### Support me if you like this project!
-<a href="buymeacoffee.com/anuragshenoy"><img src="./docs/images/black-button.png" alt="Buy me a coffee: https://buymeacoffee.com/anuragshenoy" width="200"></a>
+<a href="https://buymeacoffee.com/anuragshenoy"><img src="./docs/images/black-button.png" alt="Buy me a coffee: https://buymeacoffee.com/anuragshenoy" width="200"></a>
