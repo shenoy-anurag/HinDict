@@ -1,10 +1,14 @@
 "use client";
 import React from "react";
+import { Prata, Courgette, Yantramanav } from "next/font/google";
+
 import SvgIcon from "@/component/icons/svg-icon";
 import Label from "@/component/atom/label.component";
 import Appbar from "./((component))/appbar.component";
 import SearchBar from "./((component))/search-bar.component";
-import { Prata, Courgette, Yantramanav } from "next/font/google";
+import { streamChat } from "@/api/openai";
+import { validateUserPrompt } from "./utils";
+
 
 const yantramanav = Yantramanav({
     subsets: ["devanagari"],
@@ -45,37 +49,29 @@ export default function HomePage() {
             match = match2;
         else if (match3 && match3[1])
             match = match3;
-        // else {
-        //     match = null;
-        // }
-        // const match = match1 || match2 || match3;
         return match ? match[1] : null;
     }
 
     async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         setMessage("");
-        const response = await searchQuery(keyword);
         let streamedMessage: string = '';
-        if (response != undefined && response.status === 200) {
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) break;
-                const chunk = decoder.decode(value, { stream: true });
-                // let chunk = decoder.decode(value, { stream: true });
-                // Replace newline characters with HTML <br> tags
-                // chunk = chunk.replace(/\n/g, '<br>');
-                setMessage(message => `${message}${chunk}`);
-                streamedMessage = `${streamedMessage}${chunk}`; // because message won't update until next render.
+        if (!validateUserPrompt(keyword)) {
+            setData(data);
+            setError("Invalid search! You cannot search for more than 5 words");
+            setStatus("failed");
+            return
+        }
+        const textStream = await searchQuery(keyword);
+        if (textStream != undefined) {
+            for await (const textPart of textStream) {
+                setMessage(message => `${message}${textPart}`);
+                streamedMessage = `${streamedMessage}${textPart}`; // because message won't update until next render.
             }
-            console.log(streamedMessage);
             const equivalentWord = extractEquivalentWord(streamedMessage);
             console.log(equivalentWord);
             let data = null;
-            if(equivalentWord != null) {
+            if (equivalentWord != null) {
                 // process the message, extract the english word, then make an api call to get dictionary data.
                 const dynamicData = await fetch(
                     `https://api.dictionaryapi.dev/api/v2/entries/en/${equivalentWord}`
@@ -86,13 +82,63 @@ export default function HomePage() {
             setError(data);
             setStatus("success");
             return
-        } else {
+        }
+        // const response = await searchQueryLocal(keyword);
+        // if (response != undefined && response.status === 200) {
+        //     const reader = response.body.getReader();
+        //     const decoder = new TextDecoder();
+
+        //     while (true) {
+        //         const { value, done } = await reader.read();
+        //         if (done) break;
+        //         const chunk = decoder.decode(value, { stream: true });
+        //         // console.log(chunk);
+        //         // let chunk = decoder.decode(value, { stream: true });
+        //         // Replace newline characters with HTML <br> tags
+        //         // chunk = chunk.replace(/\n/g, '<br>');
+        //         setMessage(message => `${message}${chunk}`);
+        //         streamedMessage = `${streamedMessage}${chunk}`; // because message won't update until next render.
+        //     }
+        //     console.log(streamedMessage);
+        //     const equivalentWord = extractEquivalentWord(streamedMessage);
+        //     console.log(equivalentWord);
+        //     let data = null;
+        //     if (equivalentWord != null) {
+        //         // process the message, extract the english word, then make an api call to get dictionary data.
+        //         const dynamicData = await fetch(
+        //             `https://api.dictionaryapi.dev/api/v2/entries/en/${equivalentWord}`
+        //         );
+        //         data = await dynamicData.json();
+        //     }
+        //     setData(data);
+        //     setError(data);
+        //     setStatus("success");
+        //     return
+        // } 
+        else {
             setStatus("failed");
             setError(data);
             setData(undefined);
         }
 
     }
+    // async function searchQueryLocal(query: string) {
+    //     try {
+    //         if (query === "") return;
+    //         if (query !== keyword) {
+    //             setKeyword(query);
+    //         }
+    //         setStatus("loading");
+    //         setData(undefined);
+    //         const dynamicData = await fetch(
+    //             `http://127.0.0.1:5005/stream?word=${query}`
+    //         );
+    //         return dynamicData;
+    //     } catch (error) {
+    //         console.log(error);
+    //         setStatus("failed");
+    //     }
+    // }
     async function searchQuery(query: string) {
         try {
             if (query === "") return;
@@ -101,9 +147,8 @@ export default function HomePage() {
             }
             setStatus("loading");
             setData(undefined);
-            const dynamicData = await fetch(
-                `http://127.0.0.1:5005/stream?word=${query}`
-            );
+            console.log("before streamChat");
+            const dynamicData = await streamChat(query);
             return dynamicData;
         } catch (error) {
             console.log(error);
