@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import SvgIcon from "@/component/icons/svg-icon";
 import { useTheme } from "@/app/hook/use-theme.hook";
+import InfoModal from "./info-modal.component";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,18 +16,26 @@ const inter = Inter({
 /**
  * Appbar component
  */
-export default function Appbar() {
-  // const [isDark, setIsDark] = React.useState(false);
+export default function Appbar({ pressHome }: { pressHome: () => void }) {
   const { toggleTheme, darkMode } = useTheme();
+  const [isInfoOpen, setInfoOpen] = React.useState(false);
+  const handleModal = () => {
+    setInfoOpen(!isInfoOpen)
+  }
 
   return (
     <div className={`${inter.className}`}>
       <nav className="flex place-content-between py-6 theme-text-h3 ">
-        <Link href={"/"} title="HinDict">
+        <Link href={"/"} onClick={pressHome} title="HinDict">
           <SvgIcon className="h-6 w-6 " icon={"Book"} />
         </Link>
 
-        <div className="flex place-content-center gap-2 ">
+        <div className="flex place-content-center gap-3 ">
+          <button onClick={handleModal}>
+            <div className="flex items-center">
+              <SvgIcon className="h-6 w-6 " icon={"Info"} />
+            </div>
+          </button>
           <a
             className="flex place-content-center"
             href="https://github.com/shenoy-anurag/HinDict"
@@ -61,6 +70,7 @@ export default function Appbar() {
 
         </div>
       </nav>
+      <InfoModal isOpen={isInfoOpen} onOpenChange={handleModal} />
     </div>
   );
 }

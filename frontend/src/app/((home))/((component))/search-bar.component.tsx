@@ -23,7 +23,7 @@ export default function SearchBar({
       <div className="theme-input flex ">
         <input
           className="peer w-full bg-surface outline-none placeholder:text-sm theme-text-sub1"
-          placeholder="Search for any keyword"
+          placeholder="Search for any romanized hindi word"
           required={true}
           onChange={(e) => {
             setKeyword(e.target.value);

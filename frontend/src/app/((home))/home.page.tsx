@@ -158,9 +158,16 @@ export default function HomePage() {
             setStatus("failed");
         }
     }
+    function handlePressHome(): void {
+        setKeyword("");
+        setStatus("idle");
+        setError(null);
+        setData(null);
+        setMessage('');
+    }
     return (
         <main className="max-w-3xl mx-auto px-4 sm:px-0">
-            <Appbar />
+            <Appbar pressHome={handlePressHome}/>
             <SearchBar
                 status={status}
                 keyword={keyword}

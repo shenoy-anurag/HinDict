@@ -28,6 +28,8 @@ Had to add the "Do not omit this phrase under any circumstances" because the mod
 ## Thoughts
 I'm pretty sure the LLM is overkill for this use-case (despite picking the small 3B parameter model), but I wanted to have fun building with LLMs. Currently fine-tuning a smaller model to save on costs.
 
+Update: Decided to use OpenAI's api to save on costs and improve inference speed.
+
 ## More demo images
 #### Bhumi
 ![Demo Screenshot: Bhumi](./docs/images/hindict-bhumi-light.png)
@@ -44,6 +46,4 @@ I'm pretty sure the LLM is overkill for this use-case (despite picking the small
 <a href="https://buymeacoffee.com/anuragshenoy"><img src="./docs/images/black-button.png" alt="Buy me a coffee: https://buymeacoffee.com/anuragshenoy" width="200"></a>
 
 ### Attributions
- ![Favicon](./frontend/src/app/favicon.ico)
-
-<a target="_blank" href="https://icons8.com/icon/OWrbstths95S/dictionary">Dictionary</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+Favicon: <a target="_blank" href="https://icons8.com/icon/OWrbstths95S/dictionary">Dictionary</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>

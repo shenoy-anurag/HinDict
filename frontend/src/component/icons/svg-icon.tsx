@@ -8,7 +8,8 @@ import LightDark from "./light-dark.icon";
 import Play from "./play-pause.icon";
 import GithubIcon from "./github.icon";
 import BuyMeACoffeeIcon from "./buy-me-a-coffee.icon";
-type Icons = "Book" | "Toggle" | "Search" | "LightDark" | "Play" | "Github" | "BuyMeACoffee";
+import InfoIcon from "./info.icon";
+type Icons = "Book" | "Toggle" | "Search" | "LightDark" | "Play" | "Github" | "BuyMeACoffee" | "Info";
 
 export type SvgIconSize =
   | 1
@@ -108,6 +109,8 @@ function getSVGIcon(
       return <GithubIcon size={size} className={className} />;
     case "BuyMeACoffee":
       return <BuyMeACoffeeIcon size={size} className={className} />;
+    case "Info":
+      return <InfoIcon size={size} className={className} />;
 
     default:
       return <></>;
