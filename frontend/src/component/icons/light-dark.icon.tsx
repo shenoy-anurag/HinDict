@@ -23,6 +23,7 @@ export default function LightDark({
           strokeLinecap="round"
           strokeLinejoin="round"
         >
+          <title>Switch to Light Mode</title>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
           <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
@@ -42,6 +43,7 @@ export default function LightDark({
           strokeLinecap="round"
           strokeLinejoin="round"
         >
+          <title>Switch to Dark Mode</title>
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
           <path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" />

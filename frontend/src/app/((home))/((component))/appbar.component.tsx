@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 
 import SvgIcon from "@/component/icons/svg-icon";
 import { useTheme } from "@/app/hook/use-theme.hook";
@@ -21,13 +22,28 @@ export default function Appbar() {
   return (
     <div className={`${inter.className}`}>
       <nav className="flex place-content-between py-6 theme-text-h3 ">
-        <SvgIcon className="h-6 w-6 " icon={"Book"} />
+        <Link href={"/"} title="HinDict">
+          <SvgIcon className="h-6 w-6 " icon={"Book"} />
+        </Link>
 
         <div className="flex place-content-center gap-2 ">
-          {/* <select className="outline-none bg-default">
-            <option className="theme-text-h3">Sans</option>
-            <option className="theme-text-h3">Serif </option>
-          </select> */}
+          <a
+            className="flex place-content-center"
+            href="https://github.com/shenoy-anurag/HinDict"
+          >
+            <div className="flex items-center">
+              <SvgIcon className="h-6 w-6 " icon={"Github"} />
+            </div>
+          </a>
+          <a
+            className="flex place-content-center"
+            href="https://buymeacoffee.com/anuragshenoy"
+          >
+            <div className="flex items-center">
+              <SvgIcon className="h-5 w-5 " icon={"BuyMeACoffee"} />
+            </div>
+          </a>
+          <span className="px-2"></span>
           <button
             className="flex place-content-center"
             onClick={() => {
@@ -42,6 +58,7 @@ export default function Appbar() {
               />
             </div>
           </button>
+
         </div>
       </nav>
     </div>

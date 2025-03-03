@@ -58,8 +58,11 @@ export default function HomePage() {
         setMessage("");
         let streamedMessage: string = '';
         if (!validateUserPrompt(keyword)) {
-            setData(data);
-            setError("Invalid search! You cannot search for more than 5 words");
+            setData(null);
+            setError({
+                message: "Invalid search! You cannot search for more than 5 words",
+                resolution: "Consider only querying for Hindi words, cause I don't have infinite money"
+            });
             setStatus("failed");
             return
         }
@@ -148,7 +151,6 @@ export default function HomePage() {
             }
             setStatus("loading");
             setData(undefined);
-            console.log("before streamChat");
             const dynamicData = await streamChat(query);
             return dynamicData;
         } catch (error) {

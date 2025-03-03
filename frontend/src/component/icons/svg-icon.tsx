@@ -6,7 +6,9 @@ import ToggleIcon from "./toggle.icon";
 import SearchIcon from "./search.icon";
 import LightDark from "./light-dark.icon";
 import Play from "./play-pause.icon";
-type Icons = "Book" | "Toggle" | "Search" | "LightDark" | "Play";
+import GithubIcon from "./github.icon";
+import BuyMeACoffeeIcon from "./buy-me-a-coffee.icon";
+type Icons = "Book" | "Toggle" | "Search" | "LightDark" | "Play" | "Github" | "BuyMeACoffee";
 
 export type SvgIconSize =
   | 1
@@ -102,6 +104,10 @@ function getSVGIcon(
           config={new Config<Variant<"play" | "pause">>(variant)}
         />
       );
+    case "Github":
+      return <GithubIcon size={size} className={className} />;
+    case "BuyMeACoffee":
+      return <BuyMeACoffeeIcon size={size} className={className} />;
 
     default:
       return <></>;
