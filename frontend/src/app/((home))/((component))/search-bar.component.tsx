@@ -36,6 +36,7 @@ export default function SearchBar({
           <button
             className="h-6 w-6 theme-text-sub1"
             onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
               search;
             }}
           >

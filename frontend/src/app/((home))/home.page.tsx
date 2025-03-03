@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
 import { Prata, Courgette, Yantramanav } from "next/font/google";
@@ -324,7 +325,7 @@ function Definition({ definitions }: any) {
     );
 }
 
-function Nonyms({ nonyms, label, setQuery = (e: any) => { } }: any) {
+function Nonyms({ nonyms, label, setQuery = () => { } }: any) {
     return (
         nonyms &&
         nonyms.length > 0 && (
