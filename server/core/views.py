@@ -86,41 +86,6 @@ class Protected(Resource):
             return make_response(jsonify({'status': API_STATUS_ERROR}))
 
 
-class Chat(Resource):
-    def post(self):
-        if not request.is_json:
-            return jsonify({'status': API_STATUS_FAILURE, "msg": "Missing JSON in request"})
-
-        prompt = request.json.get('prompt', None)
-        # role = request.json.get('role', None)
-        user = request.json.get('user', None)
-
-        try:
-            client = Client(
-                host='http://ollama:11434',
-                headers={'x-some-header': 'some-value'}
-            )
-            stream = client.chat(
-                model='llama3.2:3b',
-                messages=[
-                    {
-                        'role': 'user',
-                        'content': prompt,
-                    }
-                ],
-                stream=True
-            )
-            def generate():
-                for chunk in stream:
-                    yield (chunk['message']['content'])
-
-            return Response(stream_with_context(generate()), content_type='text/plain')
-        except Exception as e:
-            logger.error(e)
-            logger.debug(traceback.format_exc())
-            return make_response(jsonify({'status': API_STATUS_ERROR}))
-
-
 class ChatSync(Resource):
     def post(self):
         if not request.is_json:
@@ -194,6 +159,5 @@ api.add_resource(Ping, '/ping')
 api.add_resource(Login, '/login')
 api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(Protected, '/protected')
-api.add_resource(Chat, '/chat')
 api.add_resource(ChatSync, '/chat-sync')
 api.add_resource(Stream, '/stream')

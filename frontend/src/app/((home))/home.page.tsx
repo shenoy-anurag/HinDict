@@ -360,18 +360,3 @@ function Nonyms({ nonyms, label, setQuery = () => { } }: any) {
         )
     );
 }
-
-
-// function appendMessage(text: string, className: string) {
-//     let messageContainer = createMessageContainer(className);
-//     messageContainer.innerHTML = text.replace(/\n/g, '<br>'); // Replace newlines with <br>
-//     document.getElementById('chatArea').appendChild(messageContainer);
-//     messageContainer.scrollIntoView({ behavior: 'smooth' });
-// }
-
-// function createMessageContainer(className: string) {
-//     let div = document.createElement('div');
-//     div.classList.add('message', className);
-//     document.getElementById('chatArea').appendChild(div);
-//     return div;
-// }
