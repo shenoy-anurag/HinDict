@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { GoogleAnalytics } from '@next/third-parties/google';
+import AnalyticsWrapper from "@/component/analytics.component";
 // import { Geist, Geist_Mono } from "next/font/google";
 
 // const geistSans = Geist({
@@ -26,8 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <GoogleAnalytics gaId="G-KXT5VL09V8" />
-      <body className={"bg-default min-h-screen"}>{children}</body>
+      <body className={"bg-default min-h-screen"}>
+        {children}
+        <AnalyticsWrapper />
+      </body>
     </html>
   );
 }
