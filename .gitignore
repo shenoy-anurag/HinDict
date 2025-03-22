@@ -18,3 +18,4 @@ frontend/venv
 frontend/app/__pycache__/
 
 llama-readme.md
+*.env
