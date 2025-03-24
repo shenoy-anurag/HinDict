@@ -67,8 +67,18 @@ export default function HomePage() {
             return
         }
         const textStream = await searchQuery(keyword);
-        if (textStream != undefined) {
-            for await (const textPart of textStream) {
+        // ReadableStream Version (Supported on Safari!)
+        if (textStream) {
+            const reader = textStream.getReader();
+            let done = false;
+
+            while (!done) {
+                const { value, done: readerDone } = await reader.read();
+                done = readerDone;
+                const textPart = value;
+                
+                if (done) break;
+
                 setMessage(message => `${message}${textPart}`);
                 streamedMessage = `${streamedMessage}${textPart}`; // because message won't update until next render.
             }
@@ -87,6 +97,28 @@ export default function HomePage() {
             setStatus("success");
             return
         }
+        // AsyncIterable Version (Not supported on Safari!)
+        // if (textStream != undefined || textStream != null) {
+        //     for await (const textPart of textStream) {
+        //         setMessage(message => `${message}${textPart}`);
+        //         streamedMessage = `${streamedMessage}${textPart}`; // because message won't update until next render.
+        //     }
+        //     const equivalentWord = extractEquivalentWord(streamedMessage);
+        //     console.log(equivalentWord);
+        //     let data = null;
+        //     if (equivalentWord != null) {
+        //         // process the message, extract the english word, then make an api call to get dictionary data.
+        //         const dynamicData = await fetch(
+        //             `https://api.dictionaryapi.dev/api/v2/entries/en/${equivalentWord}`
+        //         );
+        //         data = await dynamicData.json();
+        //     }
+        //     setData(data);
+        //     setError(data);
+        //     setStatus("success");
+        //     return
+        // }
+
         // const response = await searchQueryLocal(keyword);
         // if (response != undefined && response.status === 200) {
         //     const reader = response.body.getReader();
@@ -124,25 +156,7 @@ export default function HomePage() {
             setError(data);
             setData(undefined);
         }
-
     }
-    // async function searchQueryLocal(query: string) {
-    //     try {
-    //         if (query === "") return;
-    //         if (query !== keyword) {
-    //             setKeyword(query);
-    //         }
-    //         setStatus("loading");
-    //         setData(undefined);
-    //         const dynamicData = await fetch(
-    //             `http://127.0.0.1:5005/stream?word=${query}`
-    //         );
-    //         return dynamicData;
-    //     } catch (error) {
-    //         console.log(error);
-    //         setStatus("failed");
-    //     }
-    // }
     async function searchQuery(query: string) {
         try {
             if (query === "") return;
@@ -151,6 +165,11 @@ export default function HomePage() {
             }
             setStatus("loading");
             setData(undefined);
+            // Local Server call (Flask, Ollama)
+            // const dynamicData = await fetch(
+            //     `http://127.0.0.1:5005/stream?word=${query}`
+            // );
+            // OpenAI API call
             const dynamicData = await streamChat(query);
             return dynamicData;
         } catch (error) {
@@ -167,7 +186,7 @@ export default function HomePage() {
     }
     return (
         <main className="max-w-3xl mx-auto px-4 sm:px-0">
-            <Appbar pressHome={handlePressHome}/>
+            <Appbar pressHome={handlePressHome} />
             <SearchBar
                 status={status}
                 keyword={keyword}
