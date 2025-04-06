@@ -43,13 +43,13 @@ export default function CookieConsentBanner({ onChange }: { onChange: () => void
                             </div>
                             <div className="flex justify-end">
                                 <button
-                                    className="cookie-bg-primary text-white cookie-button-border border-x border-y py-2 px-4 rounded-md mr-2"
+                                    className="cookie-bg-primary text-white cookie-button-border border-x border-y border-gray-100 dark:border-gray-500 py-2 px-4 rounded-md mr-2"
                                     onClick={handleAccept}
                                 >
                                     Accept
                                 </button>
                                 <button
-                                    className="cookie-bg-secondary text-white cookie-button-border border-x border-y py-2 px-4 rounded-md mr-2"
+                                    className="cookie-bg-secondary text-white cookie-button-border border-x border-y border-gray-200 dark:border-gray-500 py-2 px-4 rounded-md mr-2"
                                     onClick={handleDecline}
                                 >
                                     Decline

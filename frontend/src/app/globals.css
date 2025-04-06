@@ -120,11 +120,12 @@ a {
     @apply bg-red-500 dark:bg-red-100;
   }
   .cookie-bg-primary {
-    /* @apply bg-[#0c4f15] dark:bg-red-100; */
-    @apply bg-green-900 dark:bg-green-900;
+    /* @apply bg-green-900 dark:bg-green-900; */
+    @apply bg-gray-600 dark:bg-gray-700;
   }
   .cookie-bg-secondary {
-    @apply bg-red-900 dark:bg-red-900;
+    /* @apply bg-red-900 dark:bg-red-900; */
+    @apply bg-gray-400 dark:bg-gray-400;
   }
   .cookie-surface {
     @apply bg-[#cbd6da] dark:bg-[#323137];

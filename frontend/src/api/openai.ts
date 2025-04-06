@@ -18,7 +18,7 @@ function buildPrompt(text: string): string {
 export async function invokeChat(text: string) {
     const prompt: string = buildPrompt(text);
     const response = await generateText({
-        model: openai(process.env.OPENAI_MODEL_NAME || "gpt-4o-mini-2024-07-18"),
+        model: openai(process.env.API_OPENAI_MODEL_NAME || "gpt-4o-mini-2024-07-18"),
         prompt: prompt,
     });
     return response.text;
@@ -27,7 +27,7 @@ export async function invokeChat(text: string) {
 export async function streamChat(text: string) {
     const prompt: string = buildPrompt(text);
     const { textStream } = streamText({
-        model: openai(process.env.OPENAI_MODEL_NAME || "gpt-4o-mini-2024-07-18"),
+        model: openai(process.env.API_OPENAI_MODEL_NAME || "gpt-4o-mini-2024-07-18"),
         prompt: prompt,
     });
     return textStream;
