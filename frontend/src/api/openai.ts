@@ -3,9 +3,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { streamText, generateText } from 'ai';
 
 const openai = createOpenAI({
-    // custom settings, e.g.
     apiKey: process.env.API_OPENAI_API_KEY,
-    compatibility: 'strict', // strict mode, enable when using the OpenAI API
 });
 
 const system_prompt: string = "Respond in one concise sentence without disclaimers or examples. Format: User word title-case, (user word in Hindi), refers to … (provide a definition in 5-15 words). Always conclude with this exact phrase: \'\nClosest English equivalent: (closest english equivalent single word)\'. Do not omit this phrase under any circumstances. If the word/phrase is not a Hindi word/phrase, respond with \"That's not a Hindi word/phrase!\" and then respond with \"That's a \", the detected language and the meaning and the Closest English equivalent as mentioned earlier." // BEST PROMPT SO FAR!!
